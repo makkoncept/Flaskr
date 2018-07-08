@@ -1,9 +1,10 @@
 from flaskr import app
-from flask import render_template
+from flask import render_template, redirect, url_for, flash
+from flaskr.forms import LoginForm, RegisterForm
 
 
 @app.route('/')
-def index():
+def home():
     posts = [
         {
             'username': "test1",
@@ -19,11 +20,19 @@ def index():
     return render_template('index.html', posts=posts)
 
 
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash(f"{form.username.data} Successfully logged in")
+        return redirect(url_for('home'))
+    return render_template('login.html', form=form)
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html')
+    register = RegisterForm()
+    if register.validate_on_submit():
+        flash(f'{register.username.data}, registered')
+        return redirect(url_for('login'))
+    return render_template('register.html', register=register)

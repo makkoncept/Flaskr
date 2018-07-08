@@ -1,19 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="text" class="form-control"placeholder="Email">
-      </div>
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" class="form-control"placeholder="Username">
-      </div>
-        <div class="form-group">
-        <label>Password</label>
-        <input type="text" class="form-control" placeholder="Username">
-      </div>
-        <button type="submit" class="btn btn-primary mb-2">Sign Up</button>
-    </form>
+<form action="" method="post">
+    {{ register.hidden_tag() }}
+    <div class="form-group">
+        {{ register.username.label }}
+        {{ register.username(class="form-control", placeholder="Username") }}
+    </div>
+    <div class="form-group">
+        {{ register.email.label }}
+        {{ register.email(class="form-control", placeholder="Email") }}
+        {% if register.email.errors %}
+        <ul>
+            {% for error in register.email.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ register.password.label }}
+        {{ register.password(class="form-control", placeholder="Password") }}
+    </div>
+    {{ register.submit(class="btn btn-primary mb-2") }}
+</form>
 {% endblock %}
